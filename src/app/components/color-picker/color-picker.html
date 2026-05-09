@@ -1,0 +1,100 @@
+<div class="color-picker-container">
+
+  <button class="color-picker-btn" (click)="togglePanel()" title="Selector de color"
+          [style.backgroundColor]="selectedHex()" [style.opacity]="previewOpacity()">
+  </button>
+
+  <div class="color-picker-panel" [class.open]="isOpen()">
+
+      <div class="panel-header">
+        <span class="panel-title">Selector de Color</span>
+        <button class="close-btn" (click)="closePanel()">✕</button>
+      </div>
+
+      <div class="panel-content">
+
+        <!-- Preview -->
+        <div class="color-preview"
+             [style.backgroundColor]="selectedHex()"
+             [style.opacity]="previewOpacity()">
+        </div>
+
+        <!-- Color nativo + HEX -->
+        <div class="inputs-row">
+          <input type="color" class="native-color-input"
+                 [value]="selectedHex()"
+                 (input)="onNativeColorChange($event)" />
+          <input type="text" class="hex-input"
+                 [value]="selectedHex()"
+                 (change)="onHexInputChange($event)"
+                 placeholder="#FF0000" maxlength="7" />
+        </div>
+
+        <!-- Valores calculados -->
+        <div class="color-values">
+          <span class="val-label">RGB</span>
+          <span class="val-text">{{ selectedRgb() }}</span>
+          <span class="val-label">HSL</span>
+          <span class="val-text">{{ selectedHsl() }}</span>
+        </div>
+
+        <!-- Sliders HSL -->
+        <div class="sliders-group">
+          <label>Hue: {{ currentHsl().h }}°</label>
+          <input type="range" min="0" max="360" class="slider hue-slider"
+                 [value]="currentHsl().h" (input)="onHueChange($event)" />
+
+          <label>Saturación: {{ currentHsl().s }}%</label>
+          <input type="range" min="0" max="100" class="slider"
+                 [value]="currentHsl().s" (input)="onSaturationChange($event)" />
+
+          <label>Luminosidad: {{ currentHsl().l }}%</label>
+          <input type="range" min="0" max="100" class="slider"
+                 [value]="currentHsl().l" (input)="onLightnessChange($event)" />
+
+          <label>Opacidad: {{ selectedAlpha() }}%</label>
+          <input type="range" min="0" max="100" class="slider"
+                 [value]="selectedAlpha()" (input)="onAlphaChange($event)" />
+        </div>
+
+        <!-- Paleta predefinida -->
+        <div class="palette-section">
+          <label>Colores CSS</label>
+          <div class="color-palette">
+            @for (color of cssColors; track color.hex) {
+              <button class="palette-color"
+                      [style.backgroundColor]="color.hex"
+                      [title]="color.name"
+                      (click)="selectCssColor(color.hex)">
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Historial -->
+        @if (colorHistory().length > 0) {
+          <div class="history-section">
+            <label>Recientes</label>
+            <div class="color-history">
+              @for (c of colorHistory(); track c.hex) {
+                <button class="history-color"
+                        [style.backgroundColor]="c.hex"
+                        [title]="c.hex"
+                        (click)="selectFromHistory(c.hex)">
+                </button>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Acciones -->
+        <div class="action-buttons">
+          <button class="btn btn-primary"   (click)="applyColor()">Aplicar</button>
+          <button class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+          <button class="btn btn-copy"      (click)="copyHex()">Copiar</button>
+        </div>
+
+      </div>
+    </div>
+
+</div>

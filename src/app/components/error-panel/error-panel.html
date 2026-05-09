@@ -1,0 +1,47 @@
+<div class="error-panel-container">
+
+  @if (errors().length === 0) {
+    <div class="no-errors">
+      <span class="check-icon">✓</span>
+      <p>Sin errores</p>
+    </div>
+  }
+
+  @if (errors().length > 0) {
+    <div class="error-table-wrapper">
+      <table class="error-table">
+        <thead class="table-header">
+          <tr>
+            <th class="col-num">#</th>
+            <th class="col-file">Archivo</th>
+            <th class="col-line">Línea</th>
+            <th class="col-column">Col</th>
+            <th class="col-lexema">Lexema</th>
+            <th class="col-type">Tipo</th>
+            <th class="col-message">Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (err of errors(); track $index) {
+            <tr [class]="severityClass(err.tipo)">
+              <td class="col-num">{{ $index + 1 }}</td>
+              <td class="col-file">
+                <span class="file-badge">{{ fileName(err.fileId) }}</span>
+              </td>
+              <td class="col-line">{{ err.linea }}</td>
+              <td class="col-column">{{ err.columna }}</td>
+              <td class="col-lexema">
+                <span class="lexema-badge">{{ err.lexema }}</span>
+              </td>
+              <td class="col-type">
+                <span [class]="'type-badge ' + typeClass(err.tipo)">{{ err.tipo }}</span>
+              </td>
+              <td class="col-message" [title]="err.descripcion">{{ cleanMessage(err.descripcion) }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>

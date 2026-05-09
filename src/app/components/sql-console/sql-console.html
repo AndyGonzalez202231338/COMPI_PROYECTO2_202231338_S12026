@@ -1,0 +1,97 @@
+<div class="sql-console">
+
+  <!-- Cabecera -->
+  <div class="console-header">
+    <span class="console-title">SQL Propietario YFERA</span>
+    <span class="console-hint">Enter ejecuta · Shift+Enter nueva línea</span>
+    <button class="btn-clear" (click)="clear()">Limpiar</button>
+  </div>
+
+  <!-- Historial -->
+  <div class="console-history" #historyEl>
+
+    @if (sql.history().length === 0) {
+      <div class="history-empty">
+        Escribe una consulta SQL y presiona Enter o el botón Ejecutar
+      </div>
+    }
+
+    @for (entry of sql.history(); track $index) {
+      <div class="history-entry">
+
+        <!-- Consulta ejecutada -->
+        <div class="entry-query-row">
+          <span class="prompt">&gt;</span>
+          <span class="entry-query">{{ entry.query }}</span>
+          <span class="entry-time">{{ formatTime(entry.timestamp) }}</span>
+        </div>
+
+        <!-- Errores léxicos y sintácticos -->
+        @for (err of entry.errors; track $index) {
+          <div class="entry-error">
+            <span class="err-icon">✗</span>
+            <span class="err-badge">{{ err.kind === 'lex' ? 'Léxico' : 'Sintáctico' }}</span>
+            <span class="err-desc">{{ err.description }}</span>
+            @if (err.line > 0) {
+              <span class="err-pos">línea {{ err.line }}, col {{ err.col }}</span>
+            }
+          </div>
+        }
+
+        <!-- Mensaje de éxito (DML / DDL) -->
+        @if (entry.message && entry.errors.length === 0) {
+          <div class="entry-message">
+            <span class="ok-icon">✓</span>
+            {{ entry.message }}
+          </div>
+        }
+
+        <!-- Resultado tabular (SELECT) -->
+        @if (entry.rows && entry.rows.length > 0) {
+          <div class="result-table-wrap">
+            <table class="result-table">
+              <thead>
+                <tr>
+                  @for (col of columns(entry.rows[0]); track col) {
+                    <th>{{ col }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of entry.rows; track $index) {
+                  <tr>
+                    @for (col of columns(entry.rows[0]); track col) {
+                      <td>{{ row[col] }}</td>
+                    }
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+
+      </div>
+    }
+
+  </div>
+
+  <!-- Área de entrada -->
+  <div class="console-input-row">
+    <div class="input-wrapper">
+      <pre #highlightPre
+           class="sql-highlight-layer"
+           aria-hidden="true"
+           [innerHTML]="highlighted()"></pre>
+      <textarea #queryInput
+                class="sql-input"
+                placeholder="TABLE usuarios COLUMNS nombre-string, edad-int;"
+                spellcheck="false"
+                autocomplete="off"
+                rows="3"
+                (input)="onInput()"
+                (keydown)="onKeydown($event)"></textarea>
+    </div>
+    <button class="btn-run" (click)="run()">Ejecutar</button>
+  </div>
+
+</div>

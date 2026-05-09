@@ -1,0 +1,29 @@
+<div class="dialog-backdrop" (click)="cancel()"></div>
+
+<div class="dialog" role="dialog" [attr.aria-label]="title">
+  <div class="dialog-header">
+    <span class="dialog-icon">{{ mode === 'folder' ? 'Carpeta' : 'Archivo' }}</span>
+    <span class="dialog-title">{{ title }}</span>
+  </div>
+
+  <div class="dialog-body">
+    <input
+      #nameInput
+      class="dialog-input"
+      type="text"
+      [(ngModel)]="value"
+      [placeholder]="placeholder"
+      (keydown)="onKeydown($event)"
+      spellcheck="false"
+      autocomplete="off"
+    />
+    @if (hint) {
+      <p class="dialog-hint">{{ hint }}</p>
+    }
+  </div>
+
+  <div class="dialog-footer">
+    <button class="btn-cancel" (click)="cancel()">Cancelar</button>
+    <button class="btn-confirm" (click)="confirm()" [disabled]="!value.trim()">Crear</button>
+  </div>
+</div>
