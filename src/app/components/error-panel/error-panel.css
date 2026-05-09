@@ -1,0 +1,136 @@
+.error-panel-container {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ─ Empty state ─ */
+.no-errors {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #6ee7b7;
+  gap: 8px;
+}
+
+.check-icon {
+  font-size: 32px;
+}
+
+.no-errors p {
+  font-size: 13px;
+  margin: 0;
+  color: #585b70;
+}
+
+/* ─ Table wrapper ─ */
+.error-table-wrapper {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+}
+
+.error-table-wrapper::-webkit-scrollbar { width: 6px; height: 6px; }
+.error-table-wrapper::-webkit-scrollbar-track { background: #181825; }
+.error-table-wrapper::-webkit-scrollbar-thumb { background: #45475a; border-radius: 3px; }
+
+/* ─ Table ─ */
+.error-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.table-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #181825;
+}
+
+.table-header th {
+  padding: 6px 10px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6c7086;
+  border-bottom: 1px solid #313244;
+  white-space: nowrap;
+}
+
+/* ─ Rows ─ */
+.error-table tbody tr {
+  border-bottom: 1px solid #181825;
+  transition: background 0.1s;
+}
+
+.error-table tbody tr:hover { background: #2a2a3e; }
+
+.severity-error   { background: rgba(243, 139, 168, 0.04); }
+.severity-warning { background: rgba(249, 226, 175, 0.04); }
+
+.severity-error:hover   { background: rgba(243, 139, 168, 0.10) !important; }
+.severity-warning:hover { background: rgba(249, 226, 175, 0.10) !important; }
+
+/* ─ Cells ─ */
+.error-table td {
+  padding: 5px 10px;
+  vertical-align: middle;
+}
+
+/* ─ Column widths ─ */
+.col-num    { width: 32px;  text-align: center; color: #45475a; font-size: 11px; }
+.col-file   { width: 130px; }
+.col-line   { width: 50px;  text-align: center; color: #a6adc8; }
+.col-column { width: 40px;  text-align: center; color: #a6adc8; }
+.col-lexema { width: 100px; }
+.col-type   { width: 100px; text-align: center; }
+.col-message { min-width: 200px; color: #cdd6f4; white-space: normal; word-break: break-word; line-height: 1.4; }
+
+/* ─ Badges ─ */
+.file-badge {
+  background: #313244;
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: #89b4fa;
+  font-size: 11px;
+  font-weight: 500;
+  display: inline-block;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.lexema-badge {
+  background: #2a2a3e;
+  color: #cba6f7;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  display: inline-block;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.type-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.type-lexico    { background: #f9e2af33; color: #f9e2af; }
+.type-sintactico { background: #f38ba833; color: #f38ba8; }
+.type-semantico  { background: #89dceb33; color: #89dceb; }

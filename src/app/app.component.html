@@ -1,0 +1,95 @@
+<div class="ide-shell">
+
+  <!-- ── Toolbar ───────────────────────────────────────────── -->
+  <header class="toolbar">
+    <div class="toolbar-brand">
+      <span class="brand-y">Y</span>FERA
+    </div>
+
+    <div class="toolbar-actions">
+      <button class="tb-btn" title="Nuevo proyecto" (click)="newProject()">Nuevo</button>
+      <button class="tb-btn" title="Abrir proyecto" (click)="openProject()">Abrir</button>
+      <button class="tb-btn" title="Exportar árbol" (click)="exportProject()">Exportar</button>
+      <button class="tb-btn" title="Exportar tabla de símbolos" (click)="exportSymbolTable()">
+        Tabla de símbolos
+      </button>
+      <input #fileInput type="file" accept=".zip" style="display:none" (change)="onFileSelected($event)">
+      <div class="tb-separator"></div>
+      <app-color-picker (colorSelected)="onColorSelected($event)" />
+      <button class="tb-btn tb-btn--run" title="Ejecutar" (click)="run()">Ejecutar</button>
+    </div>
+  </header>
+
+  <!-- ── Body: sidebar + editor + preview ─────────────────── -->
+  <div class="ide-body">
+
+    <aside class="sidebar">
+      <app-file-tree />
+    </aside>
+
+    <main class="editor-pane">
+      <app-editor />
+    </main>
+
+    <aside class="preview-pane">
+      <app-preview />
+    </aside>
+
+  </div>
+
+  <!-- ── Bottom: brand + tabbed panel ────────────────────── -->
+  <footer class="bottom-panel">
+
+    <!-- Columna izquierda: logo YFERA -->
+    <div class="bottom-brand">
+      <div class="brand-emblem">
+        <svg viewBox="0 0 80 80" class="brand-svg" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="37" fill="none" stroke="#89b4fa" stroke-width="1.5"/>
+          <circle cx="40" cy="40" r="27" fill="#181825" stroke="#313244" stroke-width="1"/>
+          <line x1="40" y1="2"  x2="40" y2="13" stroke="#89b4fa" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="40" y1="67" x2="40" y2="78" stroke="#89b4fa" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="2"  y1="40" x2="13" y2="40" stroke="#89b4fa" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="67" y1="40" x2="78" y2="40" stroke="#89b4fa" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="9"  y1="13" x2="17" y2="21" stroke="#45475a" stroke-width="1"/>
+          <line x1="71" y1="13" x2="63" y2="21" stroke="#45475a" stroke-width="1"/>
+          <line x1="9"  y1="67" x2="17" y2="59" stroke="#45475a" stroke-width="1"/>
+          <line x1="71" y1="67" x2="63" y2="59" stroke="#45475a" stroke-width="1"/>
+          <text x="40" y="52" text-anchor="middle"
+                font-family="'JetBrains Mono',monospace"
+                font-size="30" font-weight="900" fill="#89b4fa">Y</text>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">YFERA</span>
+          <span class="brand-sub">Framework</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna derecha: tabs + contenido -->
+    <div class="bottom-right">
+      <div class="bottom-tabs">
+        <button class="bottom-tab"
+                [class.active]="activeBottomTab() === 'errors'"
+                (click)="switchTab('errors')">
+          <i class="bi bi-exclamation-triangle"></i> ERRORES
+        </button>
+        <button class="bottom-tab"
+                [class.active]="activeBottomTab() === 'sql'"
+                (click)="switchTab('sql')">
+          <i class="bi bi-database"></i> SQL
+        </button>
+      </div>
+
+      <div class="bottom-content">
+        @if (activeBottomTab() === 'errors') {
+          <app-error-panel />
+        }
+        @if (activeBottomTab() === 'sql') {
+          <app-sql-console />
+        }
+      </div>
+    </div>
+
+  </footer>
+
+</div>

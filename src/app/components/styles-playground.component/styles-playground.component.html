@@ -1,0 +1,110 @@
+<div class="playground">
+
+  <h2>🧪 Playground del lenguaje .styles</h2>
+
+  <!-- Estado del parser -->
+  <div class="status" *ngIf="!parserReady && !parserError">
+    ⏳ Cargando parser Jison...
+  </div>
+  <div class="status status--error" *ngIf="parserError">
+    {{ parserError }}
+  </div>
+  <div class="status status--ok" *ngIf="parserReady">
+     Parser listo
+  </div>
+
+  <!-- Editor de código fuente -->
+  <div class="section">
+    <div class="section-header">
+      <h3> Código fuente .styles</h3>
+      <div class="actions">
+        <button (click)="loadExample()" class="btn-secondary">
+           Cargar ejemplo
+        </button>
+        <button (click)="reset()" class="btn-secondary">
+          Limpiar
+        </button>
+        <button (click)="compile()" class="btn-primary" [disabled]="!parserReady">
+           Compilar
+        </button>
+      </div>
+    </div>
+    <textarea
+      [(ngModel)]="sourceCode"
+      class="source-input"
+      rows="14"
+      spellcheck="false"
+      placeholder="Escribe código .styles aquí...">
+    </textarea>
+  </div>
+
+  <!-- Resultados en columnas -->
+  <div class="results">
+
+    <!-- CSS generado -->
+    <div class="section">
+      <div class="section-header">
+        <h3> CSS generado</h3>
+        <span class="badge badge-ok" *ngIf="cssOutput && errors.length === 0">
+           Compilado
+        </span>
+      </div>
+      <pre class="output-box" *ngIf="cssOutput">{{ cssOutput }}</pre>
+      <p class="empty" *ngIf="!cssOutput">— Sin output todavía —</p>
+    </div>
+
+    <!-- AST en JSON -->
+    <div class="section">
+      <div class="section-header">
+        <h3> AST (JSON)</h3>
+      </div>
+      <pre class="output-box" *ngIf="astOutput">{{ astOutput }}</pre>
+      <p class="empty" *ngIf="!astOutput">— Sin AST todavía —</p>
+    </div>
+
+  </div>
+
+  <!-- Vista previa de estilos -->
+  <div class="section" *ngIf="previewHtml">
+    <div class="section-header">
+      <h3> Vista previa</h3>
+      <span class="badge badge-ok">En vivo</span>
+    </div>
+    <iframe class="preview-frame" [srcdoc]="previewHtml!" sandbox="allow-same-origin"></iframe>
+  </div>
+
+  <!-- Tabla de errores -->
+  <div class="section">
+    <div class="section-header">
+      <h3> Errores ({{ errors.length }})</h3>
+    </div>
+
+    <table class="error-table" *ngIf="errors.length > 0">
+      <thead>
+        <tr>
+          <th>Lexema</th>
+          <th>Línea</th>
+          <th>Columna</th>
+          <th>Tipo</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let err of errors" [ngClass]="'row-' + err.tipo.toLowerCase().replace('á','a').replace('é','e')">
+          <td><code>{{ err.lexema }}</code></td>
+          <td>{{ err.linea }}</td>
+          <td>{{ err.columna }}</td>
+          <td>
+            <span class="badge" [ngClass]="'badge-' + err.tipo.toLowerCase().replace('á','a').replace('é','e')">
+              {{ err.tipo }}
+            </span>
+          </td>
+          <td>{{ err.descripcion }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="empty" *ngIf="errors.length === 0">— Sin errores —</p>
+  </div>
+
+</div>

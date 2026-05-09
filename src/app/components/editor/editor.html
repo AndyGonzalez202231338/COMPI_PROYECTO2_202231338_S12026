@@ -1,0 +1,105 @@
+<div class="editor-wrapper">
+
+  <!-- Barra de tabs -->
+  <div class="tabs-bar">
+    @for (file of fs.openFiles(); track file.id) {
+      <div class="tab" [class.active]="isActiveTab(file)" (click)="selectTab(file)">
+        <i [class]="getTabIcon(file)"></i>
+        <span>{{ file.name }}.{{ file.type }}</span>
+        @if (file.isDirty) {
+          <span class="dirty-dot" title="Sin guardar">*</span>
+        }
+        <button class="tab-close" (click)="closeTab($event, file)"><i class="bi bi-x"></i></button>
+      </div>
+    }
+  </div>
+
+  <!-- Área del editor -->
+  <div class="editor-area">
+
+    @if (fs.openFiles().length === 0) {
+      <div class="editor-placeholder">
+        <span class="logo-text">YFERA</span>
+        <p>Abre un archivo del explorador para comenzar</p>
+      </div>
+    } @else {
+      <div class="editor-body">
+
+        <!-- Fila: gutter + overlay de código -->
+        <div class="editor-viewport">
+
+          <!-- Gutter de números de línea -->
+          <div class="gutter" #gutter>
+            @for (n of lineNums(); track n) {
+              <div class="ln">{{ n }}</div>
+            }
+          </div>
+
+          <!-- Overlay de código coloreado -->
+          <div class="code-wrapper">
+
+            <pre #highlightLayer
+                 class="highlight-layer"
+                 aria-hidden="true"
+                 [innerHTML]="highlightedHtml()"
+                 (scroll)="onPreScroll()"></pre>
+
+            <textarea #codeInput
+                      class="code-input"
+                      spellcheck="false"
+                      autocomplete="off"
+                      autocorrect="off"
+                      autocapitalize="off"
+                      (input)="onInput()"
+                      (scroll)="onTextareaScroll()"
+                      (keydown)="onKeydown($event)"
+                      (blur)="onBlur()"></textarea>
+
+          </div>
+
+        </div>
+
+        <!-- Panel de errores (visible solo si hay errores) -->
+        @if (lexicalErrors().length > 0) {
+          <div class="error-panel">
+
+            <div class="error-panel-header">
+              <span class="error-panel-title">Errores</span>
+              <span class="error-panel-count">{{ lexicalErrors().length }}</span>
+            </div>
+
+            <div class="error-table-wrapper">
+              <table class="error-table">
+                <thead>
+                  <tr>
+                    <th class="cell-num">#</th>
+                    <th class="cell-lexeme">Lexema</th>
+                    <th class="cell-num">Línea</th>
+                    <th class="cell-num">Col</th>
+                    <th class="cell-type">Tipo</th>
+                    <th class="cell-desc">Descripción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (err of lexicalErrors(); track $index) {
+                    <tr>
+                      <td class="cell-num">{{ $index + 1 }}</td>
+                      <td class="cell-lexeme">{{ err.lexeme !== 'unknown' ? err.lexeme : '—' }}</td>
+                      <td class="cell-num">{{ err.line }}</td>
+                      <td class="cell-num">{{ err.column }}</td>
+                      <td class="cell-type">{{ err.type }}</td>
+                      <td class="cell-desc" [title]="err.description">{{ cleanDesc(err.description) }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        }
+
+      </div>
+    }
+
+  </div>
+</div>

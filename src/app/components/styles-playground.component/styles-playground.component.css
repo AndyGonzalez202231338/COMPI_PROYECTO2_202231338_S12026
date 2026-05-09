@@ -1,0 +1,201 @@
+:host {
+  display:    block;
+  padding:    20px;
+  background: #1e1e1e;
+  color:      #d4d4d4;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+.playground {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+h2 {
+  margin: 0 0 16px;
+  color: #569cd6;
+  font-size: 22px;
+}
+
+h3 {
+  margin: 0;
+  font-size: 14px;
+  color: #cccccc;
+  font-weight: 600;
+}
+
+/* ── Estado ────────────────────────────────────────────────── */
+.status {
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  background: #2d2d2d;
+  border: 1px solid #3c3c3c;
+}
+.status--ok    { color: #4ec9b0; border-color: #4ec9b0; }
+.status--error { color: #f48771; border-color: #f48771; }
+
+/* ── Sección ───────────────────────────────────────────────── */
+.section {
+  background: #252526;
+  border: 1px solid #3c3c3c;
+  border-radius: 6px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* ── Botones ──────────────────────────────────────────────── */
+.btn-primary,
+.btn-secondary {
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.btn-primary {
+  background: #007acc;
+  color: white;
+  font-weight: 600;
+}
+.btn-primary:hover:not([disabled]) {
+  background: #1a8ad4;
+}
+.btn-primary[disabled] {
+  background: #3c3c3c;
+  color: #6a6a6a;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #d4d4d4;
+  border: 1px solid #3c3c3c;
+}
+.btn-secondary:hover {
+  background: #3c3c3c;
+}
+
+/* ── Editor ───────────────────────────────────────────────── */
+.source-input {
+  width: 100%;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  border: 1px solid #3c3c3c;
+  border-radius: 4px;
+  padding: 12px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+}
+.source-input:focus {
+  border-color: #007acc;
+}
+
+/* ── Resultados en 2 columnas ─────────────────────────────── */
+.results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .results { grid-template-columns: 1fr; }
+}
+
+.output-box {
+  background: #1e1e1e;
+  border: 1px solid #3c3c3c;
+  border-radius: 4px;
+  padding: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+  max-height: 400px;
+  overflow: auto;
+  white-space: pre-wrap;
+  color: #ce9178;
+}
+
+.empty {
+  color: #6a6a6a;
+  font-style: italic;
+  margin: 0;
+  font-size: 13px;
+}
+
+/* ── Vista previa ────────────────────────────────────────── */
+.preview-frame {
+  width: 100%;
+  height: 220px;
+  border: 1px solid #3c3c3c;
+  border-radius: 4px;
+  background: #1e1e1e;
+}
+
+/* ── Tabla de errores ─────────────────────────────────────── */
+.error-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.error-table th {
+  background: #2d2d2d;
+  padding: 6px 12px;
+  text-align: left;
+  color: #858585;
+  border-bottom: 1px solid #3c3c3c;
+}
+
+.error-table td {
+  padding: 6px 12px;
+  border-bottom: 1px solid #2a2a2a;
+  color: #d4d4d4;
+}
+
+.row-lexico    td { border-left: 3px solid #569cd6; }
+.row-sintactico td { border-left: 3px solid #f48771; }
+.row-semantico td { border-left: 3px solid #dcdcaa; }
+
+.error-table code {
+  background: #1e1e1e;
+  padding: 1px 6px;
+  border-radius: 3px;
+  color: #ce9178;
+  font-size: 11px;
+}
+
+/* ── Badges ───────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.badge-ok        { background: #1a3d3a; color: #4ec9b0; }
+.badge-lexico    { background: #1a3a5c; color: #569cd6; }
+.badge-sintactico { background: #3a1010; color: #f48771; }
+.badge-semantico { background: #3a3620; color: #dcdcaa; }

@@ -1,1 +1,73 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('bootstrap-icons/font/bootstrap-icons.css');
+
+.tok-keyword    { color: #cba6f7; }                      /* morado  – Mauve    */
+.tok-property   { color: #74c7ec; }                      /* zafiro  – Sapphire */
+.tok-operator   { color: #a6e3a1; }                      /* verde   – Green    */
+.tok-string     { color: #fab387; }                      /* naranja – Peach    */
+.tok-number     { color: #89dceb; }                      /* celeste – Sky      */
+.tok-identifier { color: #cdd6f4; }                      /* blanco  – Text     */
+.tok-symbol     { color: #89b4fa; }                      /* azul    – Blue     */
+.tok-comment    { color: #6c7086; font-style: italic; }  /* gris    – Overlay1 */
+.tok-error      { color: #f38ba8; text-decoration: underline wavy #f38ba8; }
+.tok-color      { color: #fab387; font-weight: 600; }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+app-root {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.symtbl-wrap {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.symtbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.symtbl thead th {
+  position: sticky;
+  top: 0;
+  background: #0f172a;
+  color: #fff;
+  text-align: left;
+  padding: 10px 12px;
+  white-space: nowrap;
+}
+
+.symtbl td {
+  padding: 10px 12px;
+  border-top: 1px solid #e5e7eb;
+  vertical-align: top;
+}
+
+.symtbl tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.symtbl tbody tr:hover {
+  background: #eef6ff;
+}

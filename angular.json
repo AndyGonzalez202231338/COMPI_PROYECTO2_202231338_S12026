@@ -24,11 +24,10 @@
             "styles": [
               "src/styles.css"
             ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "externalDependencies": [
+              "fs",
+              "path"
+            ]
           },
           "configurations": {
             "production": {
@@ -86,5 +85,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "e05fbb61-30c7-411b-8121-9aadc2f60262"
   }
 }

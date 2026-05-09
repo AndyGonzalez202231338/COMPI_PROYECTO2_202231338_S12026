@@ -1,0 +1,308 @@
+:host {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.editor-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #1e1e2e;
+  overflow: hidden;
+}
+
+.tabs-bar {
+  display: flex;
+  align-items: stretch;
+  background: #181825;
+  border-bottom: 1px solid #313244;
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+
+.tabs-bar::-webkit-scrollbar { height: 3px; }
+.tabs-bar::-webkit-scrollbar-thumb { background: #45475a; }
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #6c7086;
+  cursor: pointer;
+  border-right: 1px solid #313244;
+  white-space: nowrap;
+  transition: background 0.1s, color 0.1s;
+  position: relative;
+}
+
+.tab:hover {
+  background: #313244;
+  color: #cdd6f4;
+}
+
+.tab.active {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  border-bottom: 2px solid #89b4fa;
+}
+
+.tab-close {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0 2px;
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.5;
+}
+
+.tab-close:hover { opacity: 1; }
+
+.editor-area {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.editor-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Fila horizontal: gutter | code-wrapper */
+.editor-viewport {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Gutter de números de línea ───────────────────────────────── */
+.gutter {
+  flex-shrink: 0;
+  width: 52px;
+  overflow: hidden;          /* scroll driven por JS desde onScroll() */
+  background: #1e1e2e;
+  border-right: 1px solid #313244;
+  padding: 12px 0;           /* mismo padding-top que .highlight-layer */
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #45475a;
+  text-align: right;
+  user-select: none;
+}
+
+.ln {
+  padding-right: 10px;
+}
+
+.editor-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #45475a;
+  gap: 12px;
+}
+
+.editor-placeholder .logo-text {
+  font-size: 48px;
+  font-weight: 700;
+  color: #313244;
+  letter-spacing: -2px;
+}
+
+.editor-placeholder p {
+  font-size: 13px;
+  color: #585b70;
+}
+
+/* ── Overlay de highlighting (Jison-based) ────────────────────────── */
+
+/*
+  Contenedor del overlay: posición relativa para que las dos capas
+  (highlight-layer y code-input) puedan usar position: absolute.
+  flex: 1 permite que se encoja cuando aparece el panel de errores.
+*/
+.code-wrapper {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #1e1e2e;
+}
+
+/*
+  Estilos COMPARTIDOS entre el <pre> y el <textarea>.
+  Es CRÍTICO que ambos tengan exactamente la misma fuente, tamaño,
+  padding, line-height, word-break y white-space, o el texto coloreado
+  no se alineará con el cursor del textarea.
+*/
+.highlight-layer,
+.code-input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  tab-size: 2;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: auto;
+  border: none;
+  outline: none;
+}
+
+/*
+  Capa 1 – <pre> (fondo, z-index 1):
+  overflow: hidden scroll permite scroll programático vía JS
+  (pre.scrollTop / pre.scrollLeft = textarea.scroll*) sin mostrar
+  scrollbars propios. pointer-events: none es fundamental.
+*/
+.highlight-layer {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  /* pointer-events left ON so the scrollbar is clickable;
+     text inside cannot be selected because the textarea (z-index 2)
+     sits on top and intercepts all text-area clicks. */
+  z-index: 1;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #45475a #1e1e2e;
+  user-select: none;
+}
+.highlight-layer::-webkit-scrollbar       { width: 8px; height: 8px; }
+.highlight-layer::-webkit-scrollbar-track { background: #1e1e2e; }
+.highlight-layer::-webkit-scrollbar-thumb { background: #45475a; border-radius: 4px; }
+.highlight-layer::-webkit-scrollbar-thumb:hover { background: #585b70; }
+
+/*
+  Capa 2 – <textarea> (encima, z-index 2):
+  color: transparent oculta el texto nativo del textarea,
+  dejando que el <pre> de fondo lo "muestre" coloreado.
+  caret-color mantiene el cursor visible para el usuario.
+  -webkit-text-fill-color: transparent necesario en Safari/Chrome
+  para que el texto realmente sea invisible (color: transparent
+  no siempre es suficiente en WebKit).
+*/
+.code-input {
+  background: transparent;
+  color: transparent;
+  caret-color: #cdd6f4;
+  -webkit-text-fill-color: transparent;
+  resize: none;
+  z-index: 2;
+  right: 8px;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.code-input::-webkit-scrollbar { display: none; }
+
+.code-input::selection {
+  /* Sección de texto seleccionada: fondo visible pero texto aún transparente */
+  background: rgba(137, 180, 250, 0.4);
+}
+
+/* Las clases .tok-* están definidas en src/styles.css (global)
+   porque [innerHTML] genera spans que no reciben el atributo de
+   encapsulamiento de Angular y no pueden usar CSS de componente. */
+
+/* ── Punto de "archivo no guardado" en el tab ─────────────────────── */
+.dirty-dot {
+  color: #f38ba8;
+  font-size: 10px;
+  line-height: 1;
+}
+
+/* ── Panel de errores léxicos ──────────────────────────────────────── */
+.error-panel {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  max-height: 200px;
+  overflow: hidden;
+  background: #181825;
+  border-top: 1px solid #313244;
+}
+
+.error-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  background: #11111b;
+  border-bottom: 1px solid #313244;
+  flex-shrink: 0;
+}
+
+.error-panel-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #f38ba8;
+}
+
+.error-panel-count {
+  background: #f38ba822;
+  color: #f38ba8;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+.error-table-wrapper {
+  flex: 1;
+  overflow: auto;
+}
+
+.error-table-wrapper::-webkit-scrollbar { width: 4px; height: 4px; }
+.error-table-wrapper::-webkit-scrollbar-thumb { background: #313244; }
+
+.error-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 11px;
+}
+
+.error-table th {
+  padding: 3px 10px;
+  text-align: left;
+  color: #6c7086;
+  border-bottom: 1px solid #313244;
+  background: #1e1e2e;
+  white-space: nowrap;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+}
+
+.error-table td {
+  padding: 3px 10px;
+  border-bottom: 1px solid #1e1e2e;
+  color: #cdd6f4;
+  white-space: nowrap;
+}
+
+.error-table tr:hover td { background: #1e1e2e; }
+
+.cell-num    { color: #6c7086; text-align: center; width: 32px; }
+.cell-lexeme { color: #fab387; font-family: inherit; }
+.cell-type   { color: #cba6f7; }
+.cell-desc   { color: #f38ba8; white-space: normal; min-width: 200px; }

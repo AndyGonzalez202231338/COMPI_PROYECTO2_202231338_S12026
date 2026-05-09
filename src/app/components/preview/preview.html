@@ -1,0 +1,27 @@
+<div class="preview-wrapper">
+  <div class="preview-header">
+    <span class="preview-title">VISTA PREVIA</span>
+    <button class="run-btn" (click)="run()">Ejecutar</button>
+    <button class="source-btn" (click)="toggleSource()">
+      {{ showSource() ? 'Ocultar' : 'Código' }}
+    </button>
+    @if (result()?.html) {
+      <button class="source-btn" (click)="downloadHtml()">HTML</button>
+    }
+  </div>
+
+  <div class="preview-body">
+    @if (showSource()) {
+      <div class="source-view"></div>
+    } @else if (previewDoc()) {
+      <iframe
+        class="preview-frame"
+        [srcdoc]="previewDoc()!"
+        sandbox="allow-same-origin allow-scripts allow-forms">
+      </iframe>
+    } @else {
+      <div class="preview-empty"></div>
+    }
+  </div>
+</div>
+

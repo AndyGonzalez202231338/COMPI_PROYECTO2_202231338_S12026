@@ -1,0 +1,224 @@
+:host {
+  display: block;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.ide-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: #1e1e2e;
+  color: #cdd6f4;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+
+/* ── Toolbar ────────────────────────────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 44px;
+  background: #11111b;
+  border-bottom: 1px solid #313244;
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.toolbar-brand {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #cdd6f4;
+  user-select: none;
+}
+
+.brand-y {
+  color: #89b4fa;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tb-btn {
+  background: #1e1e2e;
+  border: 1px solid #313244;
+  color: #cdd6f4;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.tb-btn:hover {
+  background: #313244;
+  border-color: #45475a;
+}
+
+.tb-btn--run {
+  background: #a6e3a1;
+  border-color: #a6e3a1;
+  color: #1e1e2e;
+  font-weight: 700;
+}
+
+.tb-btn--run:hover {
+  background: #94d990;
+  border-color: #94d990;
+}
+
+.tb-separator {
+  width: 1px;
+  height: 22px;
+  background: #313244;
+  margin: 0 4px;
+}
+
+/* ── IDE body ───────────────────────────────────────────── */
+.ide-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  border-right: 1px solid #313244;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-pane {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #313244;
+}
+
+.preview-pane {
+  width: 360px;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Bottom panel ───────────────────────────────────────── */
+.bottom-panel {
+  height: 220px;
+  flex-shrink: 0;
+  border-top: 1px solid #313244;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+}
+
+/* Logo YFERA – columna izquierda */
+.bottom-brand {
+  width: 220px;
+  flex-shrink: 0;
+  border-right: 1px solid #313244;
+  background: #11111b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-emblem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-svg {
+  width: 80px;
+  height: 80px;
+  filter: drop-shadow(0 0 6px #89b4fa55);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.brand-name {
+  font-size: 13px;
+  font-weight: 900;
+  color: #89b4fa;
+  letter-spacing: 4px;
+}
+
+.brand-sub {
+  font-size: 9px;
+  color: #6c7086;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Columna derecha: tabs + contenido */
+.bottom-right {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.bottom-tabs {
+  display: flex;
+  align-items: stretch;
+  background: #11111b;
+  border-bottom: 1px solid #313244;
+  flex-shrink: 0;
+}
+
+.bottom-tab {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #6c7086;
+  background: none;
+  border: none;
+  border-right: 1px solid #313244;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.bottom-tab:hover {
+  color: #cdd6f4;
+  background: #1e1e2e;
+}
+
+.bottom-tab.active {
+  color: #cdd6f4;
+  background: #181825;
+  border-bottom: 2px solid #89b4fa;
+}
+
+.bottom-content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}

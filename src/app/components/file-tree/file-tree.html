@@ -1,0 +1,145 @@
+@if (dialogMode()) {
+  <app-name-dialog
+    [mode]="dialogMode()!"
+    (confirmed)="onDialogConfirm($event)"
+    (cancelled)="onDialogCancel()"
+  />
+}
+
+<!-- Context Menu -->
+@if (contextMenuPos() && contextMenuNode()) {
+  <div class="context-menu" [style.top]="contextMenuPos()!.y + 'px'" [style.left]="contextMenuPos()!.x + 'px'">
+    @if (contextMenuNode()!.type === 'folder') {
+      <button (click)="newFileInFolder(contextMenuNode()!.id)">
+        <i class="bi bi-file-plus"></i> Nuevo archivo
+      </button>
+      <button (click)="newFolderIn(contextMenuNode()!.id)">
+        <i class="bi bi-folder-plus"></i> Nueva carpeta
+      </button>
+      <hr />
+    }
+    <button (click)="deleteNode(contextMenuNode()!)">
+      <i class="bi bi-trash"></i> Eliminar
+    </button>
+  </div>
+  <div class="overlay" (click)="closeContextMenu()"></div>
+}
+
+<div class="file-tree" (click)="closeContextMenu()">
+  <div class="tree-header">
+    <span class="tree-title">EXPLORADOR</span>
+    <div class="tree-actions">
+      <button class="icon-btn" title="Nuevo archivo" (click)="newFile()">+ Archivo</button>
+      <button class="icon-btn" title="Nueva carpeta" (click)="newFolder()">+ Carpeta</button>
+    </div>
+  </div>
+
+  <div class="tree-body">
+    @if (fs.tree().length === 0) {
+      <div class="tree-empty">
+        <span>Sin archivos</span>
+        <small>Crea un archivo o carpeta para comenzar</small>
+      </div>
+    }
+
+    @for (node of fs.tree(); track node.id) {
+      <div
+        class="tree-node"
+        [class.active]="isActive(node)"
+        [class.selected]="node.type === 'folder' && selectedFolder() === node.id"
+        (click)="toggle(node)"
+        (contextmenu)="openContextMenu($event, node)"
+      >
+        <span class="node-arrow" (click)="selectFolder($event, node)">
+          @if (node.type === 'folder') {
+            <i class="bi" [class.bi-chevron-down]="isFolderOpen(node)" [class.bi-chevron-right]="!isFolderOpen(node)"></i>
+          }
+          @else {
+            <span class="spacer"></span>
+          }
+        </span>
+        <span class="node-icon"><i [class]="getIcon(node)"></i></span>
+        <span class="node-name">{{ node.name }}</span>
+
+        @if (node.type === 'folder' && selectedFolder() === node.id) {
+          <div class="node-actions">
+            <button class="action-btn" title="Nuevo archivo" (click)="newFileInFolder(node.id)">
+              <i class="bi bi-file-plus"></i>
+            </button>
+            <button class="action-btn" title="Nueva carpeta" (click)="newFolderIn(node.id)">
+              <i class="bi bi-folder-plus"></i>
+            </button>
+          </div>
+        }
+      </div>
+
+      @if (node.type === 'folder' && isFolderOpen(node) && node.children) {
+        @for (child of node.children; track child.id) {
+          <div
+            class="tree-node tree-node--child"
+            [class.active]="isActive(child)"
+            [class.selected]="child.type === 'folder' && selectedFolder() === child.id"
+            (click)="toggle(child)"
+            (contextmenu)="openContextMenu($event, child)"
+          >
+            <span class="node-arrow" (click)="selectFolder($event, child)">
+              @if (child.type === 'folder') {
+                <i class="bi" [class.bi-chevron-down]="isFolderOpen(child)" [class.bi-chevron-right]="!isFolderOpen(child)"></i>
+              }
+              @else {
+                <span class="spacer"></span>
+              }
+            </span>
+            <span class="node-icon"><i [class]="getIcon(child)"></i></span>
+            <span class="node-name">{{ child.name }}</span>
+
+            @if (child.type === 'folder' && selectedFolder() === child.id) {
+              <div class="node-actions">
+                <button class="action-btn" title="Nuevo archivo" (click)="newFileInFolder(child.id)">
+                  <i class="bi bi-file-plus"></i>
+                </button>
+                <button class="action-btn" title="Nueva carpeta" (click)="newFolderIn(child.id)">
+                  <i class="bi bi-folder-plus"></i>
+                </button>
+              </div>
+            }
+          </div>
+
+          @if (child.type === 'folder' && isFolderOpen(child) && child.children) {
+            @for (grandchild of child.children; track grandchild.id) {
+              <div
+                class="tree-node tree-node--grandchild"
+                [class.active]="isActive(grandchild)"
+                [class.selected]="grandchild.type === 'folder' && selectedFolder() === grandchild.id"
+                (click)="toggle(grandchild)"
+                (contextmenu)="openContextMenu($event, grandchild)"
+              >
+                <span class="node-arrow" (click)="selectFolder($event, grandchild)">
+                  @if (grandchild.type === 'folder') {
+                    <i class="bi" [class.bi-chevron-down]="isFolderOpen(grandchild)" [class.bi-chevron-right]="!isFolderOpen(grandchild)"></i>
+                  }
+                  @else {
+                    <span class="spacer"></span>
+                  }
+                </span>
+                <span class="node-icon"><i [class]="getIcon(grandchild)"></i></span>
+                <span class="node-name">{{ grandchild.name }}</span>
+
+                @if (grandchild.type === 'folder' && selectedFolder() === grandchild.id) {
+                  <div class="node-actions">
+                    <button class="action-btn" title="Nuevo archivo" (click)="newFileInFolder(grandchild.id)">
+                      <i class="bi bi-file-plus"></i>
+                    </button>
+                    <button class="action-btn" title="Nueva carpeta" (click)="newFolderIn(grandchild.id)">
+                      <i class="bi bi-folder-plus"></i>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          }
+        }
+      }
+    }
+  </div>
+</div>
